@@ -1,11 +1,11 @@
 <?php
-	/**
-	* 
-	*/
+	namespace app\controllers;
+
 	class Login{
-		
+
 		protected $username = 'ABCD';
 		protected $password = 'ABCD';
+		protected $token = 'ABCD';
 
 		public function __construct(){
 			# code...
@@ -18,24 +18,25 @@
 			// cek jenis login
 			if($jenis){ // mobile
 				// cek isi token
-				if($token != ""){
-					// masukan user dan password
-					// masuk fungsi login mobile
 
+				if (($token == "") || ($token !== $this->token)) {
+
+					// validasi pengguna
 					$user = isset($_POST['user']) ? $_POST['user'] : false;
 					$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
 
 					if(($user === $this->username) && ($pass === $this->password)){
-						echo "Berhasil Masuk";
+						echo "Berhasil Masuk (Token Baru)";
 					}
 					else{
 						echo "Gagal";
 					}
+
 				}
-				else{
-					// cek validasi token
-					// masuk fungsi validasi token
+				else {
+					echo "Berhasil Masuk";
 				}
+
 			}
 			else{ // sistem
 
