@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= BASE_URL."assets/"; ?>bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="<?= BASE_URL."assets/bower_components/bootstrap/dist/css/bootstrap.min.css"; ?>">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="<?= BASE_URL."assets/bower_components/font-awesome/css/font-awesome.min.css"; ?>">
 <!-- Ionicons -->

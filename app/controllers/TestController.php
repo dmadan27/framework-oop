@@ -4,10 +4,11 @@
 	/**
 	* 
 	*/
-	class Test{
+	class Test extends Controller{
 		
 		public function __construct(){
-			echo "Selamat Datang di Class Test <br>";
+			$this->model('TestModel');
+			// $this->view();
 		}
 
 		public function index(){
@@ -15,31 +16,21 @@
 		}
 
 		private function list(){
-			$data = array(
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
+			$css = array();
+			$js = array();
+
+			$config = array(
+				'title' => array(
+					'main' => 'Data Test',
+					'sub' => 'Ini adalah halaman test, yang mengadung data test',
 				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
+				'css' => $css,
+				'js' => $js,
 			);
 
-			// echo "<pre>".json_encode($data);
-			require_once ROOT.DS."app".DS."view".DS."test.php";
+			$data = $this->TestModel->getAll();
+			
+			$this->layout('test/list', $data, $config);
 		}
 
 		public function form(){
