@@ -1,11 +1,12 @@
 <?php
-	namespace app\controllers;
+	// namespace app\controllers;
 
 	class Login{
 
 		protected $username = 'ABCD';
 		protected $password = 'ABCD';
 		protected $token = 'ABCD';
+		protected $logout = "ABCD";
 
 		public function __construct(){
 			# code...
@@ -16,30 +17,40 @@
 			$token = isset($_POST['token']) ? $_POST['token'] : false;
 
 			// cek jenis login
-			if($jenis){ // mobile
-				// cek isi token
+			if($jenis) $this->login_mobile($token);
+			else $this->login_sistem();
+		}
 
-				if (($token == "") || ($token !== $this->token)) {
+		private function login_mobile($token){
+			if (($token == "") || ($token !== $this->token)) {
+				// validasi pengguna
+				$user = isset($_POST['user']) ? $_POST['user'] : false;
+				$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
 
-					// validasi pengguna
-					$user = isset($_POST['user']) ? $_POST['user'] : false;
-					$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
-
-					if(($user === $this->username) && ($pass === $this->password)){
-						echo "Berhasil Masuk (Token Baru)";
-					}
-					else{
-						echo "Gagal";
-					}
-
+				if(($user === $this->username) && ($pass === $this->password)){
+					echo "Berhasil Masuk Mobile(Token Baru)";
 				}
-				else {
-					echo "Berhasil Masuk";
+				else{
+					echo "Gagal Masuk Mobile";
 				}
 
 			}
-			else{ // sistem
-
+			else {
+				echo "Berhasil Masuk";
 			}
 		}
+
+		private function login_sistem(){
+			$user = isset($_POST['user']) ? $_POST['user'] : false;
+			$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
+
+			if(($user === $this->username) && ($pass === $this->password)){
+				echo "Berhasil Masuk Sistem";
+			}
+			else{
+				echo "Gagal Masuk Sistem";
+			}
+		}
+
+		
 	}

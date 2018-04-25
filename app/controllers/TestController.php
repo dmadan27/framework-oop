@@ -1,5 +1,5 @@
 <?php
-	namespace app\controllers;
+	// namespace app\controllers;
 
 	/**
 	* 
@@ -14,7 +14,7 @@
 			$this->list();
 		}
 
-		public function list(){
+		private function list(){
 			$data = array(
 				array(
 					'nama' => 'Ujang Jeprut',
@@ -40,5 +40,30 @@
 
 			// echo "<pre>".json_encode($data);
 			require_once ROOT.DS."app".DS."view".DS."test.php";
+		}
+
+		public function form(){
+			$id = isset($_GET['id']) ? $_GET['id'] : false;
+
+			// cek jenis form
+			if(!$id) $this->add();
+			else $this->edit($id);
 		}	
+
+		private function add(){
+			// tampil form tambah
+			echo "Tambah";
+		}
+
+		public function actionAdd($data){
+
+		}
+
+		private function edit($id){
+			echo "Edit";
+		}
+
+		public function actionEdit($data){
+
+		}
 	}

@@ -34,8 +34,8 @@
 				// load controller dan class
 				require_once $this->__controller;
 				$class = ucfirst($class);
-				$namespace = "app".DS."controllers".DS;
-				$class = $namespace.$class;
+				// $namespace = "app".DS."controllers".DS;
+				// $class = $namespace.$class;
 				$obj = new $class();
 
 				if(method_exists($obj, $method)){
