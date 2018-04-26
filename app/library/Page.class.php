@@ -1,9 +1,11 @@
 <?php
 	/**
-	* 
+	* Class Page
+	* Berfungsi untuk merender halaman layout
+	* Menambah Header, Sidebar, Content, dan Footer
+	* Menambah CSS, JS, title content, set data
 	*/
 	class Page{
-		// public $viewName = NULL;
 		private $title = array();
 		private $header;
 		private $sidebar;
@@ -14,47 +16,12 @@
 		private $js = array();
 		private $data;
 
-		public function __construct(){
-			// set css dan js
-			// $this->addCSS('css/main.css');
-			// $this->addJS('js/main.js');
-
-			// $data = array(
-			// 	array(
-			// 		'nama' => 'Ujang Jeprut',
-			// 		'umur' => 20,
-			// 	),
-			// 	array(
-			// 		'nama' => 'Ujang Jeprut',
-			// 		'umur' => 20,
-			// 	),
-			// 	array(
-			// 		'nama' => 'Ujang Jeprut',
-			// 		'umur' => 20,
-			// 	),
-			// 	array(
-			// 		'nama' => 'Ujang Jeprut',
-			// 		'umur' => 20,
-			// 	),
-			// 	array(
-			// 		'nama' => 'Ujang Jeprut',
-			// 		'umur' => 20,
-			// 	),
-			// );
-			// $this->data = $data;
-
-			// // set title dan content
-			// $this->setTitle('Page Test', 'Ini Adalah Halaman Test');
-			// $this->setContent('test/list');
-
-			// $this->render();
-		}
-
-		// public function page(){
-			
-		// }
-
-		public function setTitle($mainTitle, $subTitle){
+		/*
+			Fungsi untuk set title
+			Main Title => Title utama
+			Sub Title => Sub Title
+		*/
+		public function setTitle($mainTitle = '', $subTitle = ''){
 			$this->title['main'] = $mainTitle;
 			$this->title['sub'] = $subTitle;
 		}
@@ -96,14 +63,14 @@
 			$this->css[] = $cssPath;
 		}
 
+		public function addJS($jsPath){
+			$this->js[] = $jsPath;
+		}
+
 		public function getCSS(){
 			foreach ($this->css as $value) {
 				echo '<link rel="stylesheet" href="'.BASE_URL.$value.'">'."\n";
 			}
-		}
-
-		public function addJS($jsPath){
-			$this->js[] = $jsPath;
 		}
 
 		public function getJS(){
