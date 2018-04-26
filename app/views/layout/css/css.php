@@ -4,6 +4,7 @@
 <!-- Ionicons -->
 <link rel="stylesheet" href="<?= BASE_URL."assets/bower_components/Ionicons/css/ionicons.min.css"; ?>">
 <!-- Theme style -->
+<?php $this->getCSS(); ?>
 <link rel="stylesheet" href="<?= BASE_URL."assets/dist/css/AdminLTE.min.css"; ?>">
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
     page. However, you can choose any other skin. Make sure you

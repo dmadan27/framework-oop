@@ -98,7 +98,7 @@
 
 		public function getCSS(){
 			foreach ($this->css as $value) {
-				echo '<link rel="stylesheet" href="'.BASE_URL.'assets/'.$value.'">'."\n";
+				echo '<link rel="stylesheet" href="'.BASE_URL.$value.'">'."\n";
 			}
 		}
 
@@ -108,7 +108,7 @@
 
 		public function getJS(){
 			foreach ($this->js as $value) {
-				echo '<script src="'.BASE_URL.'assets/'.$value.'"></script>'."\n";
+				echo '<script src="'.BASE_URL.$value.'"></script>'."\n";
 			}
 		}
 

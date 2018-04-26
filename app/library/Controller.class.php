@@ -20,35 +20,30 @@
 			$this->$modelName = new $class();
 		}
 
-		protected function layout($content, $data, $config){
-			// $config = array(
-			// 	'title' => array(
-			// 		'main' => 'mainTitle',
-			// 		'sub' => 'subTitle',
-			// 	),
-			// 	'css' => $css,
-			// 	'js' => $js,
-			// );
+		protected function layout($content, $config, $data = null){
+			$view = $this->page();
 
 			// set data
-			$this->page()->setData($data);
+			$view->setData($data);
 
 			// set title
-			$this->page()->setTitle($config['title']['main'], $config['title']['sub']);
+			$view->setTitle($config['title']['main'], $config['title']['sub']);
 
 			// set css
 			foreach($config['css'] as $value){
-				$this->page()->addCSS($value);
+				$view->addCSS($value);
 			}
 
 			// set js
 			foreach($config['js'] as $value){
-				$this->page()->addJS($value);
+				$view->addJS($value);
 			}
 
 			// set content
-			$this->page()->setContent($content);
-			$this->page()->render();
+			$view->setContent($content);
+
+			// get layout
+			$view->render();
 		}
 
 		public function redirect($url){

@@ -16,8 +16,12 @@
 		}
 
 		private function list(){
-			$css = array();
-			$js = array();
+			$css = array('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
+			$js = array(
+				'assets/bower_components/datatables.net/js/jquery.dataTables.min.js', 
+				'assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js',
+				'app/views/test/js/initList.js',
+			);
 
 			$config = array(
 				'title' => array(
@@ -30,7 +34,7 @@
 
 			$data = $this->TestModel->getAll();
 			
-			$this->layout('test/list', $data, $config);
+			$this->layout('test/list', $config, $data);
 		}
 
 		public function form(){

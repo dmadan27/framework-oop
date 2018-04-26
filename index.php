@@ -15,25 +15,3 @@
 	$route = new Route();
 	$route->setUri($request)->getController();
 
-	// $page = new Page();
-
-	// $css = array(
-	// 	'main.css', 'a.css'
-	// );
-
-	// $js = array(
-	// 	'main.js', 'a.js'
-	// );
-	
-	// $config = array(
-	// 	'title' => array(
-	// 		'main' => 'mainTitle',
-	// 		'sub' => 'subTitle',
-	// 	),
-	// 	'css' => $css,
-	// 	'js' => $js,
-	// );
-
-	// echo "<pre>";
-	// var_dump($config);
-
