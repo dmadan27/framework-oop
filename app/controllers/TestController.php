@@ -7,8 +7,8 @@
 	class Test extends Controller{
 		
 		public function __construct(){
+			$this->auth();
 			$this->model('TestModel');
-			// $this->view();
 		}
 
 		public function index(){
@@ -16,6 +16,7 @@
 		}
 
 		private function list(){
+			// $this->auth->cekAuth();
 			$css = array('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
 			$js = array(
 				'assets/bower_components/datatables.net/js/jquery.dataTables.min.js', 
