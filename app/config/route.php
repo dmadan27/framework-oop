@@ -41,13 +41,32 @@
 				if(method_exists($obj, $method)){
 					// echo "Method Tersedia <br>";
 					$obj->$method();
+					// call_user_func_array(array($obj, $method), array());
 				}
-				else die($this->error()); // method tidak tersedia	
+				else die($this->error('403')); // method tidak tersedia	
 			}
-			else die($this->error()); // class tidak tersedia
+			else die($this->error('404')); // class tidak tersedia
 		}
 
-		protected function error(){
-			echo "Error 404";
+		protected function error($error){
+			switch ($error) {
+				case '403':
+					$pesanError = "FORBIDDEN ERROR !";
+					break;
+				
+				case '404':
+					$pesanError = "PAGE NOT FOUND !";
+					break;
+
+				case '500':
+					$pesanError = "INTERNAL SERVER ERROR !";
+					break;
+
+				default:
+					header('Location: '.BASE_URL);
+					break;
+			}
+			
+			require_once ROOT.DS.'app'.DS.'views'.DS.'error.php';
 		}
 	}
