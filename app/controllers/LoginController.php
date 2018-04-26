@@ -1,15 +1,15 @@
 <?php
 	// namespace app\controllers;
 
-	class Login{
+	class Login extends Controller{
 
 		protected $username = 'ABCD';
 		protected $password = 'ABCD';
-		protected $token = 'ABCD';
-		protected $logout = "ABCD";
+		protected $token;
+		// protected $logout = "ABCD";
 
 		public function __construct(){
-			# code...
+
 		}
 
 		public function index(){
@@ -18,10 +18,16 @@
 
 			// cek jenis login
 			if($jenis) $this->login_mobile($token);
-			else $this->login_sistem();
+			else{
+				if($_SERVER['REQUEST_METHOD'] == "POST") $this->loginSistem();
+				else $this->view('login');
+			}
 		}
 
-		private function login_mobile($token){
+		private function loginMobile($token){
+			// get token di db
+
+			// cek token
 			if (($token == "") || ($token !== $this->token)) {
 				// validasi pengguna
 				$user = isset($_POST['user']) ? $_POST['user'] : false;
@@ -40,11 +46,12 @@
 			}
 		}
 
-		private function login_sistem(){
+		private function loginSistem(){
 			$user = isset($_POST['user']) ? $_POST['user'] : false;
 			$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
 
 			if(($user === $this->username) && ($pass === $this->password)){
+				// set session
 				echo "Berhasil Masuk Sistem";
 			}
 			else{
@@ -52,5 +59,11 @@
 			}
 		}
 
-		
+		public function logout(){
+			session_start();
+			session_unset();
+			session_destroy();
+
+			$this->redirect(BASE_URL);
+		}
 	}
