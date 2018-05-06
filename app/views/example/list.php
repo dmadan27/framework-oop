@@ -1,3 +1,5 @@
+<?php Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung"); ?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -8,7 +10,6 @@
 	  	</h1>
 	  	<!-- breadcrumb -->
 	  	<ol class="breadcrumb">
-	    	<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
 	    	<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
 	    	<li class="active">Here</li>
 	  	</ol>

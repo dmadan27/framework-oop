@@ -1,22 +1,32 @@
 <?php
+	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	// namespace app\controllers;
 
 	/**
-	* 
+	* Example Controller
 	*/
 	class Test extends Controller{
 		
+		/**
+		* 
+		*/
 		public function __construct(){
 			$this->auth();
+			$this->auth->cekAuth();
 			$this->model('TestModel');
 		}
 
+		/**
+		* 
+		*/
 		public function index(){
 			$this->list();
 		}
 
+		/**
+		* 
+		*/
 		private function list(){
-			// $this->auth->cekAuth();
 			$css = array('assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
 			$js = array(
 				'assets/bower_components/datatables.net/js/jquery.dataTables.min.js', 
@@ -38,6 +48,9 @@
 			$this->layout('test/list', $config, $data);
 		}
 
+		/**
+		* 
+		*/
 		public function form(){
 			$id = isset($_GET['id']) ? $_GET['id'] : false;
 
@@ -46,19 +59,30 @@
 			else $this->edit($id);
 		}	
 
+		/**
+		* 
+		*/
 		private function add(){
-			// tampil form tambah
 			echo "Tambah";
 		}
 
+		/**
+		* 
+		*/
 		public function actionAdd($data){
 
 		}
 
+		/**
+		* 
+		*/
 		private function edit($id){
 			echo "Edit";
 		}
 
+		/**
+		* 
+		*/
 		public function actionEdit($data){
 
 		}

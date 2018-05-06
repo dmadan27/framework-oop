@@ -1,69 +1,143 @@
 <?php
+	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	// namespace app\controllers;
 
+	/**
+	* Class login. Untuk melakukan login ke sistem, lockscreen dan logout
+	*/
 	class Login extends Controller{
 
-		protected $username = 'ABCD';
-		protected $password = 'ABCD';
-		protected $token;
-		// protected $logout = "ABCD";
+		protected $username = 'ABCD'; // kosongkan jika sudah memakai db
+		protected $password = 'ABCD'; // kosongkan jika sudah memakai db
 
+		/**
+		* Construct. Load class Auth
+		*/
 		public function __construct(){
-
+			$this->auth();
 		}
 
+		/**
+		* fungsi index untuk akses utama controller login
+		*/
 		public function index(){
-			$jenis = isset($_POST['jenis']) ? $_POST['jenis'] : false;
-			$token = isset($_POST['token']) ? $_POST['token'] : false;
+			if($_SERVER['REQUEST_METHOD'] == "POST") $this->doLogin(); // jika request post login
+			else $this->view('login'); // jika bukan, atau hanya menampilkan halaman login
 
-			// cek jenis login
-			if($jenis) $this->login_mobile($token);
-			else{
-				if($_SERVER['REQUEST_METHOD'] == "POST") $this->loginSistem();
-				else $this->view('login');
-			}
 		}
 
-		private function loginMobile($token){
-			// get token di db
+		/**
+		* fungsi login untuk sistem
+		* pengecekan user dan password berdasarkan jenis user
+		* pemberian hak akses berdasarkan level
+		* set session default
+		* return berupa json
+		*/
+		private function doLogin(){
+			/** 
+			* gunakan ini jika sudah memakai db 
 
-			// cek token
-			if (($token == "") || ($token !== $this->token)) {
-				// validasi pengguna
-				$user = isset($_POST['user']) ? $_POST['user'] : false;
-				$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
+				$this->username = isset($_POST['user']) ? $_POST['user'] : false;
+				$this->password = isset($_POST['pass']) ? $_POST['pass'] : false;
+			
+			*/
 
-				if(($user === $this->username) && ($pass === $this->password)){
-					echo "Berhasil Masuk Mobile(Token Baru)";
-				}
-				else{
-					echo "Gagal Masuk Mobile";
-				}
-
-			}
-			else {
-				echo "Berhasil Masuk";
-			}
-		}
-
-		private function loginSistem(){
 			$user = isset($_POST['user']) ? $_POST['user'] : false;
 			$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
+			$errorUser = $errorPass = "";
+
+			/** 
+			* example get username di db
+			
+				$dataUser = $this->UserModel->getUser($this->username);
+			
+			*/
+
+			/**
+			* example login ke db
+
+				if(!$dataUser){
+					$status = false;
+					$errorUser = "Username atau Password Anda Salah";
+					$errorPass = $errorUser;
+				}
+				else{
+					if(password_verify($this->password, $dataUser['password'])){
+						$status = true;
+						$_SESSION['sess_login'] = true;
+						$_SESSION['sess_locksreen'] = false;
+						$_SESSION['sess_level'] = $dataUser['level'];
+
+						// set data profil sesuai dgn jenis user
+						// sesuaikan dengan kebutuhan sistem
+					}
+					else{
+						$status = false;
+						$errorUser = "Username atau Password Anda Salah";
+						$errorPass = $errorUser;
+					}
+				}
+
+			*/
+				
+			/**
+			* example login statis
+			
+				if(($user === $this->username) && ($pass === $this->password)){
+					$_SESSION['sess_login'] = true;
+					$_SESSION['sess_locksreen'] = false;
+
+					$status = true;
+				}
+				else{
+					$status = false;
+					$errorUser = "Username atau Password Anda Salah";
+					$errorPass = $errorUser;
+				}
+
+			*/
 
 			if(($user === $this->username) && ($pass === $this->password)){
-				// set session
-				echo "Berhasil Masuk Sistem";
+				$_SESSION['sess_login'] = true;
+				$_SESSION['sess_locksreen'] = false;
+
+				$status = true;
 			}
 			else{
-				echo "Gagal Masuk Sistem";
+				$status = false;
+				$errorUser = "Username atau Password Anda Salah";
+				$errorPass = $errorUser;
 			}
+				
+			$error = array(
+				'user' => $errorUser,
+				'pass' => $errorPass,
+			);
+
+			$output = array(
+				'status' => $status,
+				'error' => $error,
+			);
+
+			echo json_encode($output);
 		}
 
+		/**
+		* Fungsi lockscreen
+		* set ulang session login dan session lockscreen saja
+		*/
+		private function lockscreen(){
+
+		}
+
+		/**
+		* Fungsi logout
+		* menghapus semua session yang ada
+		*/
 		public function logout(){
-			session_start();
 			session_unset();
 			session_destroy();
 
-			$this->redirect(BASE_URL);
+			$this->redirect();
 		}
 	}
