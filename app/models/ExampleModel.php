@@ -4,7 +4,7 @@
 	/**
 	* Class Example model
 	*/
-	class TestModel extends Database{
+	class ExampleModel extends Database{
 		
 		protected $koneksi;
 		protected $dataTable;

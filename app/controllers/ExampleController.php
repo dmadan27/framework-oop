@@ -13,7 +13,7 @@
 		public function __construct(){
 			$this->auth();
 			$this->auth->cekAuth();
-			$this->model('TestModel');
+			$this->model('ExampleModel');
 		}
 
 		/**
@@ -43,9 +43,9 @@
 				'js' => $js,
 			);
 
-			$data = $this->TestModel->getAll();
+			$data = $this->ExampleModel->getAll();
 			
-			$this->layout('test/list', $config, $data);
+			$this->layout('example/list', $config, $data);
 		}
 
 		/**
