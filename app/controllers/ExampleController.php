@@ -5,7 +5,7 @@
 	/**
 	* Example Controller
 	*/
-	class Test extends Controller{
+	class Example extends Controller{
 		
 		/**
 		* 

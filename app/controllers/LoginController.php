@@ -21,9 +21,11 @@
 		* fungsi index untuk akses utama controller login
 		*/
 		public function index(){
-			if($_SERVER['REQUEST_METHOD'] == "POST") $this->doLogin(); // jika request post login
-			else $this->view('login'); // jika bukan, atau hanya menampilkan halaman login
-
+			if($this->auth->isLogin()) $this->redirect(BASE_URL);
+			else{
+				if($_SERVER['REQUEST_METHOD'] == "POST") $this->doLogin(); // jika request post login
+				else $this->view('login'); // jika bukan, atau hanya menampilkan halaman login
+			}
 		}
 
 		/**

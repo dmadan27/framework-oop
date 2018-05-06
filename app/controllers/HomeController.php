@@ -5,13 +5,14 @@
 	/**
 	* Class home, default controller
 	*/
-	class Home{
+	class Home extends Controller{
 
 		/**
 		* 
 		*/
 		public function __construct(){
-			
+			$this->auth();
+			$this->auth->cekAuth();
 		}
 
 		/**
