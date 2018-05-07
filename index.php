@@ -14,6 +14,7 @@
 	require_once "app/library/Page.class.php";
 	require_once "app/library/Auth.class.php";
 	require_once "app/library/Datatable.class.php";
+	require_once "app/library/Helper.class.php";
 
 	// load abstracts
 	
