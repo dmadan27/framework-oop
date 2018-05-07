@@ -98,6 +98,13 @@
 				}
 			}
 			else $this->menuSidebar = "";
+
+			/**
+			* Jika menu sidebar dinamis
+			*/
+			ob_start();
+			require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'menu_sidebar.php';
+			$this->menuSidebar = ob_get_clean();
 		}
 
 		/**
