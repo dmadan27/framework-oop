@@ -14,14 +14,14 @@
 		*/
 		public function __construct(){
 			$this->koneksi = $this->openConnection();
+			$this->dataTable = new Datatable();
 		}
 
 		/**
 		* 
 		*/
 		public function getAllDataTable($config){
-			$dataTable = new Datatable($config);
-
+			$this->dataTable->set_config($config);
 			$statement = $this->koneksi->prepare($dataTable->getDataTable());
 			$statement->execute();
 			$result = $statement->fetchAll();
@@ -29,6 +29,21 @@
 			return $result;
 		}
 
+		/**
+		* 
+		*/
+		public function recordFilter(){
+			return $this->dataTable->recordFilter();
+
+		}
+
+		/**
+		* 
+		*/
+		public function recordTotal(){
+			return $this->dataTable->recordTotal();
+		}
+		
 		/**
 		* 
 		*/
