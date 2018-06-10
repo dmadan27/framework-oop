@@ -35,17 +35,17 @@
 		* set session default
 		* return berupa json
 		*/
-		private function doLogin(){
+		protected function doLogin(){
 			/** 
 			* gunakan ini jika sudah memakai db 
 
-				$this->username = isset($_POST['user']) ? $_POST['user'] : false;
-				$this->password = isset($_POST['pass']) ? $_POST['pass'] : false;
+				$this->username = isset($_POST['username']) ? $_POST['username'] : false;
+				$this->password = isset($_POST['password']) ? $_POST['password'] : false;
 			
 			*/
 
-			$user = isset($_POST['user']) ? $_POST['user'] : false;
-			$pass = isset($_POST['pass']) ? $_POST['pass'] : false;
+			$username = isset($_POST['username']) ? $_POST['username'] : false;
+			$password = isset($_POST['password']) ? $_POST['password'] : false;
 			$errorUser = $errorPass = "";
 
 			/** 
@@ -99,7 +99,7 @@
 
 			*/
 
-			if(($user === $this->username) && ($pass === $this->password)){
+			if(($username === $this->username) && ($password === $this->password)){
 				$_SESSION['sess_login'] = true;
 				$_SESSION['sess_locksreen'] = false;
 
@@ -112,8 +112,8 @@
 			}
 				
 			$error = array(
-				'user' => $errorUser,
-				'pass' => $errorPass,
+				'username' => $errorUser,
+				'password' => $errorPass,
 			);
 
 			$output = array(
@@ -128,7 +128,7 @@
 		* Fungsi lockscreen
 		* set ulang session login dan session lockscreen saja
 		*/
-		private function lockscreen(){
+		public function lockscreen(){
 
 		}
 

@@ -1,10 +1,10 @@
 <?php
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
-
+	
 	/**
-	* Class Example model
+	* 
 	*/
-	class ExampleModel extends Database{
+	class ExampleModel extends Database implements ModelInterface{
 		
 		protected $koneksi;
 		protected $dataTable;
@@ -22,7 +22,7 @@
 		*/
 		public function getAllDataTable($config){
 			$this->dataTable->set_config($config);
-			$statement = $this->koneksi->prepare($dataTable->getDataTable());
+			$statement = $this->koneksi->prepare($this->dataTable->getDataTable());
 			$statement->execute();
 			$result = $statement->fetchAll();
 
@@ -43,35 +43,40 @@
 		public function recordTotal(){
 			return $this->dataTable->recordTotal();
 		}
-		
+
 		/**
 		* 
 		*/
 		public function getAll(){
-			$data = array(
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-				array(
-					'nama' => 'Ujang Jeprut',
-					'umur' => 20,
-				),
-			);
+			
+		}
 
-			return $data;
+		/**
+		* 
+		*/
+		public function getById($id){
+			
+		}
+
+		/**
+		* 
+		*/
+		public function insert($data){
+
+		}
+
+		/**
+		* 
+		*/
+		public function update($data){
+
+		}
+
+		/**
+		* 
+		*/
+		public function delete($id){
+
 		}
 
 		/**
@@ -80,4 +85,5 @@
 		public function __destruct(){
 			$this->closeConnection($this->koneksi);
 		}
+
 	}

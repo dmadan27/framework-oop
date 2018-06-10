@@ -5,8 +5,10 @@
 	/**
 	* Example Controller
 	*/
-	class Example extends Controller{
+	class Example extends CrudAbstract{
 		
+		protected $token;
+
 		/**
 		* 
 		*/
@@ -42,48 +44,71 @@
 				'css' => $css,
 				'js' => $js,
 			);
-
-			$data = $this->ExampleModel->getAll();
 			
-			$this->layout('example/list', $config, $data);
+			$this->layout('example/list', $config);
 		}
 
 		/**
 		* 
 		*/
-		public function form(){
-			$id = isset($_GET['id']) ? $_GET['id'] : false;
-
-			// cek jenis form
-			if(!$id) $this->add();
-			else $this->edit($id);
+		public function form($id){
+			if($id)	$this->edit($id);
+			else $this->add();
 		}	
 
 		/**
 		* 
 		*/
-		private function add(){
+		protected function add(){
 			echo "Tambah";
 		}
 
 		/**
 		* 
 		*/
-		public function actionAdd($data){
+		public function actionAdd(){
 
 		}
 
 		/**
 		* 
 		*/
-		private function edit($id){
+		protected function edit($id){
 			echo "Edit";
 		}
 
 		/**
 		* 
 		*/
-		public function actionEdit($data){
+		public function actionEdit(){
 
+		}
+
+		/**
+		*
+		*/
+		public function detail($id){
+
+		}
+
+		/**
+		*
+		*/
+		public function delete($id){
+
+		}
+
+		/**
+		*
+		*/
+		public function export(){
+
+		}
+
+		/**
+		*
+		*/
+		private function set_validation($data){
+			
 		}
 	}

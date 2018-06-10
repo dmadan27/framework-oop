@@ -139,12 +139,12 @@
 				case 'nilai':
 					// cek required
 					if($data['required']){
-						if(empty($data['field']) || $data['field'] == "") // jika data kosong
+						if($data['field'] == "") // jika data kosong
 							$output = array('cek' => false, 'error' => $data['label']." Harus Diisi");
 						else $output = $this->valid_nilai($data);
 					}
 					else{ // jika opsional
-						if(!empty($data['field']) || $data['field'] != "") // jika disii
+						if($data['field'] != "") // jika disii
 							$output = $this->valid_nilai($data);
 						else 
 							$output = array('cek' => true, 'error' => ""); // jika dikosongkan
@@ -220,7 +220,7 @@
 					&& (strlen($data['field']) <= $data['max']) ) $error = "";
 				else{
 					$cek = false;
-					$error = "Panjang $label Min. ".$data['min']." dan Maks. ".$data['max']." Karakter";
+					$error = "Panjang ".$data['label']." Min. ".$data['min']." dan Maks. ".$data['max']." Karakter";
 				} 
 					
 			}
@@ -233,7 +233,7 @@
 		* Fungsi validasi untuk angka
 		* hanya mengecek angka, yang di cek hanya angkanya saja, bukan nilainya
 		*/
-		private function valid_angka(){
+		private function valid_angka($data){
 			$cek = true;
 			$pattern = "/^[0-9]*$/";
 
@@ -248,7 +248,7 @@
 					&& (strlen($data['field']) <= $data['max']) ) $error = "";
 				else{
 					$cek = false;
-					$error = "Panjang $label Min. ".$data['min']." dan Maks. ".$data['max'];
+					$error = "Panjang ".$data['label']." Min. ".$data['min']." dan Maks. ".$data['max'];
 				} 
 					
 			}
@@ -261,7 +261,7 @@
 		* Fungsi validasi untuk nilai
 		* hanya mengecek angka, dan nilainya yg dicek
 		*/
-		private function valid_nilai(){
+		private function valid_nilai($data){
 			$cek = true;
 			$pattern = "/^[0-9.]*$/";
 
@@ -276,7 +276,7 @@
 					&& ($data['field'] <= $data['max']) ) $error = "";
 				else{
 					$cek = false;
-					$error = "Nilai $label Min. ".$data['min']." dan Maks. ".$data['max'];
+					$error = "Nilai ".$data['label']." Min. ".$data['min']." dan Maks. ".$data['max'];
 				} 
 					
 			}
@@ -287,7 +287,7 @@
 		/**
 		* Fungsi validasi untuk email
 		*/
-		private function valid_email(){
+		private function valid_email($data){
 			$cek = true;
 
 			// cek pattern
@@ -301,7 +301,7 @@
 					&& (strlen($data['field']) <= $data['max']) ) $error = "";
 				else{
 					$cek = false;
-					$error = "Panjang $label Min. ".$data['min']." dan Maks. ".$data['max']." Karakter";
+					$error = "Panjang ".$data['label']." Min. ".$data['min']." dan Maks. ".$data['max']." Karakter";
 				} 
 					
 			}
@@ -369,7 +369,7 @@
 	        	case UPLOAD_ERR_NO_FILE:
 	            	$output = array(
 						'cek' => false,
-						'error' => "Upload Gagal, Tidak File Yang Terupload",
+						'error' => "Upload Gagal, Tidak Ada File Yang Terupload",
 					);
 
 					return $output;
@@ -407,7 +407,7 @@
 
 			// cek mime type file
 			$fInfo = new finfo(FILEINFO_MIME_TYPE);
-			if(false === $ext = array_search($finfo->file($tmp_nameFile), $arrayFile, true)){
+			if(false === $ext = array_search($fInfo->file($tmp_nameFile), $arrayFile, true)){
 				$output = array(
 					'cek' => false,
 					'error' => "Upload Gagal, Format File Tidak Sesuai",

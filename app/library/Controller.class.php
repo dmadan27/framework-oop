@@ -44,7 +44,7 @@
 		final protected function validation($validation = 'validation'){
 			$this->$validation = new Validation();
 		}
-		
+
 		/**
 		* Fungsi untuk templating layout content, css, js, dan data
 		* terdapat 3 parameter
