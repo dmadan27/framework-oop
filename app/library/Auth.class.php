@@ -2,8 +2,8 @@
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	
 	/**
-	* Class Auth, Pengecekan Authentikasi yg masuk sistem
-	*/
+	 * Class Auth, Pengecekan Authentikasi yg masuk sistem
+	 */
 	class Auth{
 		
 		protected $login;
@@ -11,28 +11,51 @@
 		protected $token;
 
 		/**
-		* Fungsi cek auth sistem
-		* Untuk mengecek status user sudah login atau belum
-		* jika belum login maka akan diarahkan ke login
-		*/
+		 * Fungsi cek auth sistem
+		 * Untuk mengecek status user sudah login atau belum
+		 * jika belum login maka akan diarahkan ke login
+		 */
 		public function cekAuth(){
 			if(!$this->isLogin()){
-				session_unset();
-				session_destroy();
-				header('Location: '.BASE_URL.'login');
-				die();
+				$this->lockscreen = isset($_SESSION['sess_lockscreen']) ? $_SESSION['sess_lockscreen'] : false;
+
+				// cek lockscreen
+				if($this->lockscreen){
+					$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+					header('Location: '.BASE_URL.'login/lockscreen/?callback='.$actual_link);
+					die();
+				}
+				else{
+					session_unset();
+					session_destroy();
+					header('Location: '.BASE_URL.'login');
+					die();
+				}
 			}
+
+			// param khusus untuk notifikasi atau req dari ajax yg tidak reload halaman
+			$cekTimeout = isset($_POST['timeout']) ? $_POST['timeout'] : false;
+
+			if(!$cekTimeout) $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60));
 		}
 
 		/**
-		* pengecekan status login untuk sistem dan mobile
-		*/
+		 * pengecekan status login untuk sistem dan mobile
+		 */
 		public function isLogin(){
 			$this->login = isset($_SESSION['sess_login']) ? $_SESSION['sess_login'] : false;
-			// $this->lockscreen = isset($_SESSION['sess_locksreen']) ? $_SESSION['sess_locksreen'] : false;
+			$this->timeout = isset($_SESSION['sess_timeout']) ? strtotime($_SESSION['sess_timeout']) : false;
 
-			if(!$this->login) return false;
-			else return true;
+			if(!$this->login) 
+				return false;
+			
+			if($this->login && (time() > $this->timeout)){
+				$_SESSION['sess_login'] = false;
+				$_SESSION['sess_lockscreen'] = true;
+				return false;
+			}
+
+			return true;
 		}
 
 		/**

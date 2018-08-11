@@ -5,13 +5,13 @@
 	* Class helper, berisi function-function pembantu
 	*/
 	class Helper{
-		
+
 		/**
 		* Fungsi cetak angka dengan format rupiah
 		* contoh: Rp. 1.590.850,00
-		*/	
+		*/
 		public function cetakRupiah($value){
-			$rupiah = 'Rp. '.number_format($value, 2, ',', '.');
+			$rupiah = 'Rp '.number_format($value, 2, ',', '.');
 			return $rupiah;
 		}
 
@@ -25,13 +25,13 @@
 		}
 
 		/**
-		* FUngsi cetak tgl sesuai dengan format yang di inginkan
+		* Fungsi cetak tgl sesuai dengan format yang di inginkan
 		* param $tgl harus berformat 'yyyy-mm-dd'
-		* param $format : 
-		* 'dd-mm-yyyy' (27-02-1995), 
-		* 'yyyy-mm-dd' (2018-01-01) format default, 
-		* 'd-m-y' (27 Februari 2018), 
-		* 'yyyymmdd' (20180101), 
+		* param $format :
+		* 'dd-mm-yyyy' (27-02-1995),
+		* 'yyyy-mm-dd' (2018-01-01) format default,
+		* 'd-m-y' (27 Februari 2018),
+		* 'yyyymmdd' (20180101),
 		* 'full (Senin, 27 Februari 1995)'
 		*/
 		public function cetakTgl($tgl, $format = 'yyyy-mm-dd'){
@@ -73,7 +73,7 @@
 				case 'dd-mm-yyyy':
 					$cetak = $getTgl.'-'.$getBulan.'-'.$getTahun;
 					break;
-				
+
 				case 'd-m-y':
 					$cetak = $getTgl.' '.$arrBulan[(int)$getBulan].'-'.$getTahun;
 					break;
@@ -100,6 +100,42 @@
 		public function setKosong($data){
 			$temp = ($data == "" || empty($data)) ? "-" : $data;
 			return $temp;
+		}
+
+		/**
+		*
+		*/
+		public function cekArray($data){
+
+		}
+
+		/**
+		*
+		*/
+		public function reArrayFiles($file_post) {
+		    $file_ary = array();
+		    $file_count = count($file_post['name']);
+		    $file_keys = array_keys($file_post);
+
+		    for ($i=0; $i<$file_count; $i++) {
+		        foreach ($file_keys as $key) {
+		            $file_ary[$i][$key] = $file_post[$key][$i];
+		        }
+		    }
+
+		    return $file_ary;
+		}
+
+		/**
+		*
+		*/
+		public function rollback_file($file, $array = false){
+			if(!$array) unlink($file);
+			else{
+				foreach($file as $value){
+					unlink($value);
+				}
+			}
 		}
 
 	}

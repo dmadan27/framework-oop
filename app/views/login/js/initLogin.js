@@ -1,26 +1,21 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	// init awal
 	$('.form-lupa-password').fadeOut();
 
-	// paceOtions = {
-	// 	elements: false,
-	// 	restartOnRequestAfter: false
-	// }
-
-	$('#lupaPassword').on('click', function(){
+	$('#lupaPassword').on('click', function() {
 		resetForm();
 		$('.form-login').slideUp();
 		$('.form-lupa-password').fadeIn();
 	});
 
-	$('#back_login').on('click', function(){
+	$('#back_login').on('click', function() {
 		resetForm();
 		$('.form-lupa-password').slideUp();
 		$('.form-login').slideDown();
 	});
 
 	// submit login
-	$('#form_login').submit(function(e){
+	$('#form_login').submit(function(e) {
 		e.preventDefault();
 		submit_login();
 
@@ -28,7 +23,7 @@ $(document).ready(function(){
 	});
 
 	// submit lupa password
-	$('#form_lupa_password').submit(function(e){
+	$('#form_lupa_password').submit(function(e) {
 		e.preventDefault();
 		submit_lupaPassword();
 
@@ -36,12 +31,12 @@ $(document).ready(function(){
 	});
 
 	// on change semua field
-	$('.field').on('change', function(){
-		if(this.value !== ""){
+	$('.field').on('change', function() {
+		if(this.value !== "") {
 			$('.field-'+this.id).removeClass('has-error').addClass('has-success');
 			$(".pesan-"+this.id).text('');
 		}
-		else{
+		else {
 			$('.field-'+this.id).removeClass('has-error').removeClass('has-success');
 			$(".pesan-"+this.id).text('');	
 		}
@@ -50,20 +45,18 @@ $(document).ready(function(){
 });
 
 /**
-*
-*/
-function submit_login(){
+ * 
+ */
+function submit_login() {
 	$.ajax({
 		url: BASE_URL+'login/',
 		type: 'POST',
-		dataType: 'json',
+		dataType: 'JSON',
 		data:{
-			'user': $('#user').val().trim(),
-			'pass': $('#pass').val().trim(),
+			'username': $('#username').val().trim(),
+			'password': $('#password').val().trim(),
 		},
-		// beforeSend: function(){
-		// 	Pace.restart();
-		// },
+		beforeSend: function() {},
 		success: function(output){
 			console.log(output);
 			if(output.status) document.location=BASE_URL;
@@ -75,20 +68,20 @@ function submit_login(){
 		error: function (jqXHR, textStatus, errorThrown) { // error handling
             console.log(jqXHR, textStatus, errorThrown);
         }
-	})
+	});
 }
 
 /**
 *
 */
-function submit_lupaPassword(){
+function submit_lupaPassword() {
 
 }
 
 /**
 *
 */
-function resetForm(){
+function resetForm() {
 	// form login
 	$('#form_login').trigger('reset');
 
@@ -105,15 +98,15 @@ function resetForm(){
 /**
 *
 */
-function setError(error){
-	$.each(error, function(index, item){
+function setError(error) {
+	$.each(error, function(index, item) {
 		console.log(index);
 
-		if(!jQuery.isEmptyObject(index)){
+		if(!jQuery.isEmptyObject(index)) {
 			$('.field-'+index).removeClass('has-success').addClass('has-error');
 			$('.pesan-'+index).text(item);
 		}
-		else{
+		else {
 			$('.field-'+index).removeClass('has-error').addClass('has-success');
 			$('.pesan-'+index).text('');	
 		}

@@ -3,39 +3,39 @@
 	// namespace app\controllers;
 
 	/**
-	* Class login. Untuk melakukan login ke sistem, lockscreen dan logout
-	*/
-	class Login extends Controller{
+	 * Class login. Untuk melakukan login ke sistem, lockscreen dan logout 
+	 */
+	class Login extends Controller {
 
 		protected $username = 'ABCD'; // kosongkan jika sudah memakai db
 		protected $password = 'ABCD'; // kosongkan jika sudah memakai db
 
 		/**
-		* Construct. Load class Auth
-		*/
-		public function __construct(){
+		 * Construct. Load class Auth
+		 */
+		public function __construct() {
 			$this->auth();
 		}
 
 		/**
-		* fungsi index untuk akses utama controller login
-		*/
-		public function index(){
+		 * fungsi index untuk akses utama controller login
+		 */
+		public function index() {
 			if($this->auth->isLogin()) $this->redirect(BASE_URL);
-			else{
+			else {
 				if($_SERVER['REQUEST_METHOD'] == "POST") $this->doLogin(); // jika request post login
 				else $this->view('login'); // jika bukan, atau hanya menampilkan halaman login
 			}
 		}
 
 		/**
-		* fungsi login untuk sistem
-		* pengecekan user dan password berdasarkan jenis user
-		* pemberian hak akses berdasarkan level
-		* set session default
-		* return berupa json
-		*/
-		protected function doLogin(){
+		 * fungsi login untuk sistem
+		 * pengecekan user dan password berdasarkan jenis user
+		 * pemberian hak akses berdasarkan level
+		 * set session default
+		 * @return json
+		 */
+		protected function doLogin() {
 			/** 
 			* gunakan ini jika sudah memakai db 
 
@@ -99,13 +99,13 @@
 
 			*/
 
-			if(($username === $this->username) && ($password === $this->password)){
+			if(($username === $this->username) && ($password === $this->password)) {
 				$_SESSION['sess_login'] = true;
 				$_SESSION['sess_locksreen'] = false;
 
 				$status = true;
 			}
-			else{
+			else {
 				$status = false;
 				$errorUser = "Username atau Password Anda Salah";
 				$errorPass = $errorUser;
@@ -125,18 +125,25 @@
 		}
 
 		/**
-		* Fungsi lockscreen
-		* set ulang session login dan session lockscreen saja
-		*/
-		public function lockscreen(){
+		 * Fungsi lockscreen
+		 * set ulang session login dan session lockscreen saja
+		 */
+		public function lockscreen() {
+			$lockscreen = isset($_SESSION['sess_lockscreen']) ? $_SESSION['sess_lockscreen'] : false;
+			$callback = isset($_GET['callback']) ? $_GET['callback'] : false;
 
+			if(!$lockscreen) $this->redirect(BASE_URL);
+			else{
+				if($_SERVER['REQUEST_METHOD'] == "POST") $this->loginSistem($callback); // jika request post login
+				else $this->view('lockscreen'); // jika bukan, atau hanya menampilkan halaman login
+			}
 		}
 
 		/**
-		* Fungsi logout
-		* menghapus semua session yang ada
-		*/
-		public function logout(){
+		 * Fungsi logout
+		 * menghapus semua session yang ada
+		 */
+		public function logout() {
 			session_unset();
 			session_destroy();
 
