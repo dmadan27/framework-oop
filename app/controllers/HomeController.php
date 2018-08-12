@@ -18,6 +18,25 @@
 		 * 
 		 */
 		public function index(){
-			echo "Selamat Datang di Class Home <br>";
+			$this->beranda();
+		}
+
+		/**
+		 * 
+		 */
+		private function beranda(){
+			$css = array();
+			$js = array();
+
+			$config = array(
+				'title' => array(
+					'main' => 'Beranda',
+					'sub' => 'Dashboard Sistem',
+				),
+				'css' => $css,
+				'js' => $js,
+			);
+
+			$this->layout('beranda', $config, $data = null);
 		}
 	}

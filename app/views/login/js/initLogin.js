@@ -56,17 +56,25 @@ function submit_login() {
 			'username': $('#username').val().trim(),
 			'password': $('#password').val().trim(),
 		},
-		beforeSend: function() {},
+		beforeSend: function() {
+			$('#submit_login').prop('disabled', true);
+			$('#submit_login').prepend('<i class="fa fa-spin fa-refresh"></i> ');
+		},
 		success: function(output){
 			console.log(output);
 			if(output.status) document.location=BASE_URL;
 			else{
+				$('#submit_login').prop('disabled', false);
+				$('#submit_login').html($('#submit_login').text());
 				// set error
 				setError(output.error);
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown) { // error handling
-            console.log(jqXHR, textStatus, errorThrown);
+			console.log(jqXHR, textStatus, errorThrown);
+			swal("Pesan Gagal", "Terjadi Kesalahan Teknis, Silahkan Coba Kembali", "error");
+            $('#submit_login').prop('disabled', false);
+			$('#submit_login').html($('#submit_login').text());
         }
 	});
 }
