@@ -85,29 +85,26 @@
 			// cek jenis user
 			if($level){
 				switch (strtolower($level)) {
-					// sidebar kas besar
-					case 'kas besar':
+					//
+					case '':
 						ob_start();
-						require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'sidebar_kas_besar.php';
-						$this->menuSidebar = ob_get_clean();
-						break;
-					
-					// sidebar kas kecil
-					case 'kas kecil':
-						ob_start();
-						require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'sidebar_kas_kecil.php';
+						require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'menu_sidebar.php';
 						$this->menuSidebar = ob_get_clean();
 						break;
 
-					// sidebar owner
+					// 
 					default:
 						ob_start();
-						require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'sidebar_owner.php';
+						require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'menu_sidebar.php';
 						$this->menuSidebar = ob_get_clean();
 						break;
 				}
 			}
-			else $this->menuSidebar = "";
+			else {
+				ob_start();
+				require_once ROOT.DS.'app'.DS.'views'.DS.'layout'.DS.'sidebar'.DS.'menu_sidebar.php';
+				$this->menuSidebar = ob_get_clean();
+			}
 		}
 
 		/**

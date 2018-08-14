@@ -37,6 +37,6 @@
 				'js' => $js,
 			);
 
-			$this->layout('beranda', $config, $data = null);
+			$this->layout('beranda/home', $config, $data = null);
 		}
 	}
