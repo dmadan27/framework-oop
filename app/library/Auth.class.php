@@ -2,20 +2,21 @@
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	
 	/**
-	 * Class Auth, Pengecekan Authentikasi yg masuk sistem
+	 * Class Auth
+	 * Library untuk pengecekan Authentikasi yg masuk sistem
 	 */
 	class Auth{
 		
-		protected $login;
-		protected $lockscreen;
-		protected $token;
+		private $login;
+		private $lockscreen;
+		private $token;
 
 		/**
-		 * Fungsi cek auth sistem
-		 * Untuk mengecek status user sudah login atau belum
-		 * jika belum login maka akan diarahkan ke login
+		 * Method checkAuth
+		 * Proses pengecekan status user sudah login atau belum
+		 * Jika belum login maka akan diarahkan ke login
 		 */
-		public function cekAuth(){
+		public function checkAuth(){
 			if(!$this->isLogin()){
 				$this->lockscreen = isset($_SESSION['sess_lockscreen']) ? $_SESSION['sess_lockscreen'] : false;
 
@@ -36,18 +37,18 @@
 			// param khusus untuk notifikasi atau req dari ajax yg tidak reload halaman
 			$cekTimeout = isset($_POST['timeout']) ? $_POST['timeout'] : false;
 
-			if(!$cekTimeout) $_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60));
+			if(!$cekTimeout) {$_SESSION['sess_timeout'] = date('Y-m-d H:i:s', time()+(60*60));}
 		}
 
 		/**
-		 * pengecekan status login untuk sistem dan mobile
+		 * Method isLogin
+		 * Proses pengecekan status login untuk sistem
 		 */
 		public function isLogin(){
 			$this->login = isset($_SESSION['sess_login']) ? $_SESSION['sess_login'] : false;
 			$this->timeout = isset($_SESSION['sess_timeout']) ? strtotime($_SESSION['sess_timeout']) : false;
 
-			if(!$this->login) 
-				return false;
+			if(!$this->login) {return false;}
 			
 			if($this->login && (time() > $this->timeout)){
 				$_SESSION['sess_login'] = false;
@@ -59,24 +60,29 @@
 		}
 
 		/**
-		*
-		*/
-		private function getAkses($user){
+		 * Method getAccess
+		 * 
+		 * BUTUH PENGEMBANGAN LEBIH LANJUT
+		 */
+		private function getAccess($user){
 
 		}
 
 		/**
-		* Fungsi untuk mendapatkan token yang sudah di generate
-		* Dapat digunakan juga untuk token crsf yang akan dipasang disetiap module
-		*/
-		public function getToken(){
+		 * Method getToken
+		 * Proses generate random token yang secure
+		 * Dapat digunakan juga untuk token crsf yang akan dipasang disetiap module
+		 * @param length {int} default 25. Panjang karakter token yang ingin dibuat
+		 * @return token {string} random secure token
+		 */
+		public function getToken($length = 25){
 			$token = "";
 		    $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		    $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
 		    $codeAlphabet.= "0123456789";
 		    $max = strlen($codeAlphabet); // edited
 
-		    for ($i=0; $i < 15; $i++) {
+		    for ($i=0; $i < $length; $i++) {
 		        $token .= $codeAlphabet[$this->crypto_rand_secure(0, $max-1)];
 		    }
 
@@ -84,8 +90,12 @@
 		}
 
 		/**
-		* Fungsi untuk generate random yang secure
-		*/
+		 * Method crypto_rand_secure
+		 * Proses generate random secure
+		 * @param min {int}
+		 * @param max {int}
+		 * @param result {int}
+		 */
 		private function crypto_rand_secure($min, $max){
 		    $range = $max - $min;
 		    if ($range < 1) return $min; // not so random...
@@ -98,15 +108,5 @@
 		        $rnd = $rnd & $filter; // discard irrelevant bits
 		    } while ($rnd > $range);
 		    return $min + $rnd;
-		}
-
-		/**
-		* Fungsi untuk mengecek token yang dikirim ke client apakah sama dengan token yg di session
-		*/
-		public function cekToken($sess_token, $token, $modul){
-			if(!password_verify($sess_token, $token)){
-				header('Location: '.BASE_URL.$modul.'/');
-				die();
-			}
 		}
 	}

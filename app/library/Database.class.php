@@ -2,31 +2,42 @@
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	
 	/**
-	* Class database untuk open dan close koneksi database
-	*/
+	 * Class Database
+	 * Library untuk akses koneksi ke database
+	 * Koneksi menggunakan PDO
+	 */
 	class Database{
 
 		/**
-		* Fungsi membuka koneksi memakai PDO
-		*/
+		 * Method openConnection
+		 * Proses membuka koneksi ke database
+		 * @return connection {object}
+		 */
 		public function openConnection(){
 			$dbHost = DB_HOST;
 			$dbName = DB_NAME;
 			try{
-				$koneksi = new PDO("mysql:host=$dbHost;dbname=$dbName", DB_USERNAME, DB_PASSWORD);
-				$koneksi->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$connection = new PDO("mysql:host=$dbHost;dbname=$dbName", DB_USERNAME, DB_PASSWORD);
+				$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-				return $koneksi;
+				return $connection;
 			}
 			catch(PDOException $e){
-				die("Koneksi Database Error: " . $e->getMessage()); // jika ada error
+				// jika ada error
+				die(json_encode(array(
+					'success' => false,
+					'message' => 'Fail Connection to Database',
+					'error' => $e->getMessage()
+				)));
 			}
 		}
 
 		/**
-		* Fungsi tutup koneksi
-		*/
-		public function closeConnection($koneksi){
-			$koneksi = null;
+		 * Method closeConnection
+		 * Proses menutup koneksi dari database
+		 * @param connection {object}
+		 */
+		public function closeConnection($connection){
+			$connection = null;
 		}
 	}

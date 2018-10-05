@@ -2,18 +2,21 @@
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	
 	/**
-	* Class Route
-	* untuk mengarahkan semua request ke controller
-	*/
+	 * Class Route
+	 * Mengarahkan semua request ke controller yang dituju
+	 */
 	class Route{
 		
 		private $__request;
 		private $__controller;
 
 		/**
-		* fungsi untuk set properti request dengan request yg diisi oleh user
-		* support method chaining
-		*/
+		 * Method setUri
+		 * Proses set properti request dengan request yg diisi oleh user
+		 * support method chaining
+		 * @param request {string}
+		 * @return this {function} untuk chaining
+		 */
 		public function setUri($request){
 			// set $_request dari request yg di pinta
 			$this->__request = $request;
@@ -21,9 +24,9 @@
 		}
 
 		/**
-		* fungsi untuk load controller
-		* mengecek request dan mengarahkan ke controller
-		*/
+		 * Method getController
+		 * Proses load controller sesuai dengan request yang sudah di set
+		 */
 		public function getController(){
 			$uri = explode('/', $this->__request);
 			$class = isset($uri[0]) && ($uri[0] != "") ? strtolower($uri[0]) : DEFAULT_CONTROLLER; // class
@@ -59,10 +62,13 @@
 		}
 
 		/**
-		* fungsi untuk mengarahkan request yg tidak tersedia ke page error
-		* masih tahap pengembangan
-		*/
-		protected function error($error){
+		 * Method error
+		 * Proses handling error saat request gagal
+		 * @param error {string}
+		 * 
+		 * BUTUH PENGEMBANGAN LAGI
+		 */
+		private function error($error){
 			switch ($error) {
 				case '403':
 					$pesanError = "FORBIDDEN ERROR !";

@@ -6,6 +6,14 @@
 	define('ROOT', dirname(__FILE__)); // root file web
 	define('DS', DIRECTORY_SEPARATOR); // pemisah direktori '\'
 
+	/**
+	 * Define Type
+	 * DEVELOPMENT_LOCAL
+	 * DEVELOPMENT_LIVE
+	 * PRODUCTION
+	 * define('TYPE', '');
+	 */
+
 	// load config
 	require_once "app/config/config.php";
 	require_once "app/config/route.php";

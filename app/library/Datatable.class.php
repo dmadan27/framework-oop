@@ -2,55 +2,63 @@
 	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	
 	/**
-	* Class DataTable Server Side
-	*/
+	 * Class DataTable
+	 * Library khusus untuk akses DataTable.js via server side
+	 */
 	class Datatable extends Database{
 		
-		protected $tabel; // nama tabel
-		protected $kolomOrder; // kolom2 yg akan di order
-		protected $kolomCari; // kolom2 yg akan dicari
-		protected $orderBy; // jenis pengurutan data
-		protected $kondisi; // where clause
-		protected $query; // query
+		private $table; // nama tabel
+		private $columnOrder; // kolom2 yg akan di order
+		private $columnSearch; // kolom2 yg akan dicari
+		private $orderBy; // jenis pengurutan data
+		private $where; // where clause
+		private $query; // query
 
 		/**
-		* Hal pertama kali yang dijalankan adalah set property sesuai dengan $config yg dikirim
-		* format congig ada 5 poin penting
-		* tabel => berupa string, nama tabel atau view
-		* kolomOrder => berupa array, yang isinya harus disesuaikan dengan tabel yg dibuat di view
-		* kolomCari => berupa array, apa saja yang dapat dicari
-		* orderBy => berupa array dan memakai key, 
-		* key berupa apa yg di order, dan valuenya jenis order
-		* kondisi => berupa string, yaitu Where manual
-		*/
+		 * Method set_config
+		 * Proses set config DataTable
+		 * @param config {array}
+		 * 	$config = array (
+		 * 		'tabel' => '...', // berupa string, nama tabel atau view
+		 * 		'columnOrder' => array(...), // berupa array, apa saja yang dapat diorder
+		 * 		'columnSearch' => array(...), // berupa array, apa saja yang dapat dicari
+		 * 		'orderBy' => array(...), // berupa array apa yg di order, dan valuenya jenis order
+		 * 		'where' => '...' // berupa string, yaitu Where manual
+		 * 	);
+		 */
 		final public function set_config($config){
 			// set tabel
-			$this->tabel = $config['tabel'];
+			$this->table = $config['tabel'];
 			// set kolom order
-			$this->kolomOrder = $config['kolomOrder'];
+			$this->columnOrder = $config['kolomOrder'];
 			// set kolom cari
-			$this->kolomCari = $config['kolomCari'];
+			$this->columnSearch = $config['kolomCari'];
 			// set order by
 			$this->orderBy = $config['orderBy'];
 			// set kondisi
-			$this->kondisi = $config['kondisi'];
+			$this->where = $config['kondisi'];
 		}
 
 		/**
 		* Fungsi set query awal default untuk datatable
 		*/
+		/**
+		 * Method setDataTable
+		 * Proses set query awal default untuk datatable
+		 * @return query {string}
+		 */
 		final public function setDataTable(){
 			$search = isset($_POST['search']['value']) ? $_POST['search']['value'] : false;
 			$order = isset($_POST['order']) ? $_POST['order'] : false;
 
 			// $this->query = "SELECT * FROM $this->tabel ";
-			$query = "SELECT * FROM $this->tabel ";
+			$query = "SELECT * FROM $this->table ";
 
-			if($this->kondisi === false){
+			if($this->where === false){
 				// jika ada request pencarian
 				$qWhere = "";
 				$i = 0;
-				foreach($this->kolomCari as $cari){
+				foreach($this->columnSearch as $cari){
 					if($search){
 						if($i === 0) $qWhere .= 'WHERE '.$cari.' LIKE "%'.$search.'%" ';
 						else $qWhere .= 'OR '.$cari.' LIKE "%'.$search.'%"';
@@ -60,9 +68,9 @@
 			}
 			else{
 				// jika ada request pencarian
-				$qWhere = $this->kondisi;
+				$qWhere = $this->where;
 				$i = 0;
-				foreach($this->kolomCari as $cari){
+				foreach($this->columnSearch as $cari){
 					if($search){
 						if($i === 0) $qWhere .= ' AND ('.$cari.' LIKE "%'.$search.'%" ';
 						else $qWhere .= 'OR '.$cari.' LIKE "%'.$search.'%"';
@@ -74,21 +82,21 @@
 
 			// jika ada request order
 			$qOrder = "";
-			if($order) $qOrder = 'ORDER BY '.$this->kolomOrder[$order[0]['column']].' '.$order[0]['dir'].' ';
+			if($order) $qOrder = 'ORDER BY '.$this->columnOrder[$order[0]['column']].' '.$order[0]['dir'].' ';
 			else {
 				if($this->orderBy === false) $qOrder = "";
 				else $qOrder = 'ORDER BY '.key($this->orderBy).' '.$this->orderBy[key($this->orderBy)]; // order default
 			}
 
-			return $query .= "$qWhere $qOrder "; 
-			// $this->query .= "$qWhere $qOrder ";
+			return $query .= "$qWhere $qOrder ";
 		}
 
 		/**
-		* fungsi untuk get query datatable komplit
-		*/
+		 * Method getDataTable
+		 * Proses get full query untuk DataTable
+		 * @return query {string}
+		 */
 		final public function getDataTable(){
-			// $this->setDataTable();
 			$this->query = $this->setDataTable();
 
 			$qLimit = "";
@@ -100,9 +108,10 @@
 		}
 
 		/**
-		* untuk mendapatkan filter record
-		* sebagai pendukung dalam pagenation datatable
-		*/
+		 * Method recordFilter
+		 * Proses get filter record, sebagai pendukung dalam pagenation datatable
+		 * @return rowCount {int}
+		 */
 		final public function recordFilter(){
 			$koneksi = $this->openConnection();
 
@@ -114,14 +123,15 @@
 		}
 
 		/**
-		* untuk mendapatkan semua jumlah data
-		* sebagai pendukung dalam pagenation datatable
-		*/
+		 * Method recordTotal
+		 * Proses get semua jumlah data, sebagai pendukung dalam pagenation datatable
+		 * @return statement {int}
+		 */
 		final public function recordTotal(){
-			$koneksi = $this->openConnection();
+			$connection = $this->openConnection();
 
-			if($this->kondisi === false) $statement = $koneksi->query("SELECT COUNT(*) FROM $this->tabel")->fetchColumn();
-			else $statement = $koneksi->query("SELECT COUNT(*) FROM $this->tabel $this->kondisi")->fetchColumn();
+			if($this->where === false) $statement = $connection->query("SELECT COUNT(*) FROM $this->table")->fetchColumn();
+			else $statement = $connection->query("SELECT COUNT(*) FROM $this->table $this->where")->fetchColumn();
 			
 			return $statement;
 		}
